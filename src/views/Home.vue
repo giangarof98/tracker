@@ -2,6 +2,7 @@
   <main v-if="!loading">
     <DataTitle :text='title' :dataDate="dataDate" />
     <DataBoxes :stats='stats'/>
+    <CountrySelect @get-country="getCountry" :countries='countries' />
   </main>
 
   <main class="flex flex-col align-center justify-center text-center" v-else>
@@ -16,12 +17,14 @@
 
 import DataTitle from '@/components/title'
 import DataBoxes from '@/components/dataBoxes'
+import CountrySelect from '@/components/countrySelect'
 
 export default {
   name: 'Home',
   components: {
     DataTitle,
-    DataBoxes
+    DataBoxes,
+    CountrySelect
   },
   data(){
     return {
@@ -38,6 +41,10 @@ export default {
       const res = await fetch('https://api.covid19api.com/summary');
       const data = await res.json();
       return data;
+    },
+    getCountry(country){
+      this.stats = country
+      this.title = country.Country
     }
   },
   async created(){
